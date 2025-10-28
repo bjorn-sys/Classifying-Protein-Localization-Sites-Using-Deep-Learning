@@ -4,140 +4,146 @@
 ---
 This project focuses on predicting protein localization sites in yeast using deep learning. It explores regularization techniques like Dropout, L2 weight decay, and their combination to mitigate overfitting and improve generalization on multiclass datasets. Additionally, an interactive Streamlit web app is included for real-time predictions.
 
-Table of Contents
+***Table of Contents***
+---
+***Project Overview***
 
-Project Overview
+* Dataset
 
-Dataset
+* Features and Target Classes
 
-Features and Target Classes
+* Model Architecture
 
-Model Architecture
+* Regularization Techniques
 
-Regularization Techniques
+* Training and Evaluation
 
-Training and Evaluation
+* Results & Insights
 
-Results & Insights
+* Streamlit Deployment
 
-Streamlit Deployment
+* Installation
 
-Installation
 
-Usage
+***Project Overview***
+---
 
-References
+***This project builds multiclass classifiers to predict the subcellular localization of yeast proteins.***
 
-Project Overview
+***Key objectives:***
+---
 
-This project builds multiclass classifiers to predict the subcellular localization of yeast proteins.
+* Develop a robust neural network to classify yeast proteins.
 
-Key objectives:
+* Apply Dropout, L2 regularization, and a combination of both to reduce overfitting.
 
-Develop a robust neural network to classify yeast proteins.
+* Evaluate models using accuracy, macro F1 score, and precision.
 
-Apply Dropout, L2 regularization, and a combination of both to reduce overfitting.
+* Deploy the trained model interactively using Streamlit.
 
-Evaluate models using accuracy, macro F1 score, and precision.
+***Dataset***
 
-Deploy the trained model interactively using Streamlit.
+* The dataset consists of numerical protein features and their corresponding localization sites.
 
-Dataset
+* Features include properties such as hydrophobicity, molecular weight, isoelectric point, and other biochemical characteristics.
 
-The dataset consists of numerical protein features and their corresponding localization sites.
+* The target variable is categorical, representing the protein's localization class within the yeast cell.
 
-Features include properties such as hydrophobicity, molecular weight, isoelectric point, and other biochemical characteristics.
+***Features and Target Classes***
+---
+***Features***
 
-The target variable is categorical, representing the protein's localization class within the yeast cell.
+* 8 numerical features representing biochemical properties of proteins.
 
-Features and Target Classes
-Features
+***Target Classes***
+* Class Index	Name	Description / Meaning
+* 0	CYT	Cytoplasm
+* 1	NUC	Nucleus
+* 2	MIT	Mitochondria
+* 3	ME3	Membrane Protein Type 3
+* 4	ME2	Membrane Protein Type 2
+* 5	ME1	Membrane Protein Type 1
+* 6	ER	Endoplasmic Reticulum
+* 7	VAC	Vacuole
+* 8	POX	Peroxisome
+* 9	GOL	Golgi Apparatus
 
-8 numerical features representing biochemical properties of proteins.
+***Each class represents a specific subcellular compartment where proteins are localized.***
 
-Target Classes
-Class Index	Name	Description / Meaning
-0	CYT	Cytoplasm
-1	NUC	Nucleus
-2	MIT	Mitochondria
-3	ME3	Membrane Protein Type 3
-4	ME2	Membrane Protein Type 2
-5	ME1	Membrane Protein Type 1
-6	ER	Endoplasmic Reticulum
-7	VAC	Vacuole
-8	POX	Peroxisome
-9	GOL	Golgi Apparatus
+***Model Architecture***
+---
 
-Each class represents a specific subcellular compartment where proteins are localized.
+* Input Layer: 8 neurons (number of features)
 
-Model Architecture
+* Hidden Layer: 32 neurons with ReLU activation
 
-Input Layer: 8 neurons (number of features)
+* Output Layer: 10 neurons (number of classes)
 
-Hidden Layer: 32 neurons with ReLU activation
+* The model was trained using CrossEntropyLoss and Adam optimizer.
 
-Output Layer: 10 neurons (number of classes)
+***Regularization Techniques***
+---
+* ***1️⃣ Dropout***
+---
+* Randomly deactivates a fraction of neurons during training.
 
-The model was trained using CrossEntropyLoss and Adam optimizer.
+* Reduces neuron co-adaptation and prevents overfitting.
 
-Regularization Techniques
-1️⃣ Dropout
+* ***2️⃣ L2 Regularization (Weight Decay)***
+---
+* Penalizes large weights in the network.
 
-Randomly deactivates a fraction of neurons during training.
+* Encourages simpler models that generalize better.
 
-Reduces neuron co-adaptation and prevents overfitting.
+* ***3️⃣ Dropout + L2***
+---
+* Combines both approaches for stronger regularization.
 
-2️⃣ L2 Regularization (Weight Decay)
+* Requires careful tuning to avoid underfitting.
 
-Penalizes large weights in the network.
+***Training and Evaluation***
+---
+* Data split: 70% training, 15% validation, 15% test
 
-Encourages simpler models that generalize better.
+* Training epochs: 1000
 
-3️⃣ Dropout + L2
+* Metrics: train loss, validation loss, test accuracy, macro F1 score, precision
 
-Combines both approaches for stronger regularization.
+***Example final test performance:***
 
-Requires careful tuning to avoid underfitting.
+Model	| Test Accuracy	| Macro F1 Score	
+Dropout (M1) |	57.39% |	45.15%	
+L2 (M2)	60.53% | 60.54%	
+Dropout + L2 (M3)	| 58.74% | 43.31%	
 
-Training and Evaluation
+***Insight: L2 regularization alone achieved the best overall performance.***
 
-Data split: 70% training, 15% validation, 15% test
+***Results & Insights***
+---
 
-Training epochs: 1000
+* L2 Regularization (M2): Most effective, prevents overfitting and maintains balanced class accuracy.
 
-Metrics: train loss, validation loss, test accuracy, macro F1 score, precision
+* Dropout Only (M1): Helps reduce overfitting but slightly lower performance than L2.
 
-Example final test performance:
+* Dropout + L2 (M3): Does not outperform L2 alone; can cause slight underfitting.
 
-Model	Test Accuracy	Macro F1 Score	Macro Precision
-Dropout (M1)	57.39%	45.15%	45.12%
-L2 (M2)	60.53%	60.54%	60.49%
-Dropout + L2 (M3)	58.74%	43.31%	44.50%
+***Key Takeaways:***
+---
 
-Insight: L2 regularization alone achieved the best overall performance.
+* L2 regularization is highly effective for this dataset.
 
-Results & Insights
+* Dropout is beneficial in larger networks or highly overfitting scenarios.
 
-L2 Regularization (M2): Most effective, prevents overfitting and maintains balanced class accuracy.
+* Combining Dropout + L2 requires careful tuning to avoid overly constrained models.
 
-Dropout Only (M1): Helps reduce overfitting but slightly lower performance than L2.
+* Streamlit Deployment
 
-Dropout + L2 (M3): Does not outperform L2 alone; can cause slight underfitting.
+* Interactive app allows users to input protein features and predict localization class.
 
-Key Takeaways:
+* Displays predicted class, confidence, and probabilities for all classes.
 
-L2 regularization is highly effective for this dataset.
+* Sidebar includes feature descriptions and class meanings for clarity.
 
-Dropout is beneficial in larger networks or highly overfitting scenarios.
+* This provides a simple and user-friendly interface for real-time protein localization prediction.
 
-Combining Dropout + L2 requires careful tuning to avoid overly constrained models.
-
-Streamlit Deployment
-
-Interactive app allows users to input protein features and predict localization class.
-
-Displays predicted class, confidence, and probabilities for all classes.
-
-Sidebar includes feature descriptions and class meanings for clarity.
-
-This provides a simple and user-friendly interface for real-time protein localization prediction.
+* prediction_link :https://classifying-protein-localization-sites-using-deep-learning-76k.streamlit.app/
